@@ -1,0 +1,24 @@
+[
+  {
+    "title": "Starter Project",
+    "category": "3D Art",
+    "year": "2026",
+    "thumbnail": "https://images.unsplash.com/photo-1610296669228-602fa827fc1f?w=800&q=80",
+    "hero": "https://images.unsplash.com/photo-1610296669228-602fa827fc1f?w=1600&q=90",
+    "tagline": "Starter project seeded from backend script",
+    "overview": "Replace this seeded content from the admin dashboard after first login.",
+    "software": ["3ds Max", "Substance Painter"],
+    "polycount": "",
+    "textures": "",
+    "renderer": "",
+    "status": "published",
+    "extraDetails": [
+      {
+        "stepNumber": 1,
+        "title": "High Poly",
+        "description": "Initial high poly exploration.",
+        "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&q=85"
+      }
+    ]
+  }
+]
