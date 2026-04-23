@@ -5,10 +5,10 @@ export const artist = {
     "I create immersive environments and detailed game-ready assets, combining strong visual storytelling with clean, optimized 3D workflows.",
   bio:
     "Hi, I'm Kusang Lhamo, a Game Art student specializing in immersive environments and detailed game assets. I focus on creating visually engaging worlds that combine artistic storytelling with technical precision. I enjoy building props, environments, and scenes that feel realistic, functional, and optimized for real-time use. I continuously explore new tools and workflows to improve my craft and bring fresh creativity into every project.",
-  location: "India",
-  email: "hello@kusanglhamo.com",
+  location: "Canada",
+  email: "kusanglhamo29@gmail.com",
   social: {
-    instagram: "https://instagram.com/kusanglhamo",
+    instagram: "https://www.instagram.com/that.boring.art?igsh=MTJqaXUxY244OWFnbw==",
     behance: "https://behance.net/kusanglhamo",
     artstation: "https://artstation.com/kusanglhamo",
   },

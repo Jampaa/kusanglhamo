@@ -13,3 +13,7 @@ def get_projects_collection():
 
 def get_contact_messages_collection():
     return db.contact_messages
+
+
+def get_analytics_collection():
+    return db.analytics

@@ -6,6 +6,7 @@ import { Button } from '../components/ui/button';
 import { Skeleton } from '../components/ui/skeleton';
 import { EndlessKnot, LotusFlower, PrayerFlagBar } from '../components/TibetanDecorations';
 import { getPublishedProjects } from '../api/projects';
+import { incrementPortfolioViews } from '../api/analytics';
 
 const Home = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -36,6 +37,17 @@ const Home = () => {
       }
     };
     loadProjects();
+
+    const viewTrackedThisSession = sessionStorage.getItem('portfolioViewTracked');
+    if (!viewTrackedThisSession) {
+      incrementPortfolioViews()
+        .then(() => {
+          sessionStorage.setItem('portfolioViewTracked', '1');
+        })
+        .catch(() => {
+          // Ignore tracking failures to avoid blocking page rendering.
+        });
+    }
     
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []); // Empty dependency - only run once on mount

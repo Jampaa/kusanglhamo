@@ -9,6 +9,7 @@ import { Skeleton } from '../components/ui/skeleton';
 import { deleteProject, getAdminProjects } from '../api/projects';
 import { getAdminMe, logoutAdmin } from '../api/auth';
 import { getAdminMessages } from '../api/contact';
+import { getPortfolioViews } from '../api/analytics';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -28,14 +29,15 @@ const AdminDashboard = () => {
       setErrorMessage('');
       try {
         await getAdminMe();
-        const [projectsData, messagesData] = await Promise.all([
+        const [projectsData, messagesData, viewsCount] = await Promise.all([
           getAdminProjects(),
           getAdminMessages(),
+          getPortfolioViews(),
         ]);
         setProjects(projectsData);
         setStats({
           totalProjects: projectsData.length,
-          views: 0,
+          views: viewsCount,
           messages: messagesData.length,
         });
       } catch (error) {
