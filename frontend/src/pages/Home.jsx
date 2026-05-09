@@ -4,7 +4,6 @@ import { ArrowRight, Mail } from 'lucide-react';
 import { artist } from '../content/siteData';
 import { Button } from '../components/ui/button';
 import { Skeleton } from '../components/ui/skeleton';
-import { EndlessKnot, LotusFlower, PrayerFlagBar } from '../components/TibetanDecorations';
 import { getPublishedProjects } from '../api/projects';
 import { incrementPortfolioViews } from '../api/analytics';
 
@@ -53,194 +52,115 @@ const Home = () => {
   }, []); // Empty dependency - only run once on mount
 
   return (
-    <div className="min-h-screen bg-[#F5F1E8] relative overflow-hidden">
-      {/* Enhanced Tibetan Pattern Background */}
-      <div className="absolute inset-0 opacity-[0.08] pointer-events-none">
-        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="endless-knot" x="0" y="0" width="150" height="150" patternUnits="userSpaceOnUse">
-              <path
-                d="M75 20 L90 35 L105 35 L105 50 L90 50 L90 65 L105 65 L105 80 L90 80 L75 95 L60 80 L45 80 L45 65 L60 65 L60 50 L45 50 L45 35 L60 35 Z"
-                fill="none"
-                stroke="#C1272D"
-                strokeWidth="2"
-                opacity="0.4"
-              />
-              <circle cx="75" cy="75" r="8" fill="#D4AF37" opacity="0.3" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#endless-knot)" />
-        </svg>
-      </div>
-
-      {/* Decorative Lotus Elements */}
-      <div className="absolute top-20 right-10 opacity-10 hidden lg:block">
-        <LotusFlower className="w-32 h-32" />
-      </div>
-      <div className="absolute bottom-40 left-20 opacity-10 hidden lg:block">
-        <EndlessKnot className="w-40 h-40" color="#D4AF37" />
-      </div>
-
-      {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center px-4 sm:px-8 md:px-16 lg:px-24 relative py-20 lg:py-0">
-        <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-          {/* Left Content */}
-          <div className="space-y-6 lg:space-y-8 z-10">
-            {/* Vertical Text Accent - Hidden on mobile */}
-            <div className="flex items-start gap-4 lg:gap-6">
-              <div className="hidden sm:flex flex-col gap-2">
-                <div className="w-0.5 h-12 lg:h-16 bg-[#C1272D]"></div>
-                <span
-                  className="text-[#C1272D] text-xs tracking-widest font-medium"
-                  style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}
-                >
-                  DIGITAL ARTIST
-                </span>
-              </div>
-
-              <div className="flex-1">
-                {/* Mobile Prayer Flag */}
-                <div className="sm:hidden mb-4">
-                  <PrayerFlagBar className="h-1 mb-2" />
-                </div>
-
-                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-[#2B2B2B] leading-none tracking-tight">
-                  <span className="font-['Bebas_Neue',sans-serif] block" style={{ fontWeight: 400, letterSpacing: '0.02em' }}>
-                    KUSANG
-                  </span>
-                  <span className="font-['Bebas_Neue',sans-serif] block text-outline" style={{ fontWeight: 400, letterSpacing: '0.02em' }}>
-                    LHAMO
-                  </span>
-                </h1>
-
-                <div className="mt-4 lg:mt-6 space-y-3 lg:space-y-4">
-                  <p className="text-lg sm:text-xl text-[#2B2B2B]/80 font-light tracking-wide">
-                    {artist.title}
-                  </p>
-                  <p className="text-sm sm:text-base text-[#2B2B2B]/60 leading-relaxed max-w-lg font-light">
-                    {artist.intro}
-                  </p>
-                </div>
-
-                <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mt-6 lg:mt-8">
-                  <Link to="/projects" className="w-full sm:w-auto">
-                    <Button
-                      size="lg"
-                      className="w-full sm:w-auto bg-[#C1272D] hover:bg-[#A01F25] text-white px-6 sm:px-8 py-5 sm:py-6 text-sm font-medium tracking-wider transition-all duration-300 shadow-lg hover:shadow-xl"
-                    >
-                      VIEW WORK
-                      <ArrowRight size={18} className="ml-2" />
-                    </Button>
-                  </Link>
-                  <Link to="/contact" className="w-full sm:w-auto">
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="w-full sm:w-auto border-2 border-[#2B2B2B] text-[#2B2B2B] hover:bg-[#2B2B2B] hover:text-white px-6 sm:px-8 py-5 sm:py-6 text-sm font-medium tracking-wider transition-all duration-300"
-                    >
-                      CONTACT
-                      <Mail size={18} className="ml-2" />
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right 3D Object */}
-          <div className="relative flex items-center justify-center mt-8 lg:mt-0">
-            <div
-              className="relative w-full max-w-md lg:max-w-lg transition-transform duration-300 ease-out"
-              style={{
-                transform: `perspective(1000px) rotateY(${mousePosition.x}deg) rotateX(${-mousePosition.y}deg)`
-              }}
-            >
-              {/* Decorative Frame */}
-              <div className="absolute -inset-4 border-2 border-[#C1272D]/20 rounded-sm"></div>
-              <div className="absolute -inset-2 border border-[#D4AF37]/20 rounded-sm"></div>
-              
-              <img
-                src="https://images.unsplash.com/photo-1610296669228-602fa827fc1f?w=800&q=80"
-                alt="3D Tibetan Art"
-                className="w-full h-auto drop-shadow-2xl rounded-sm"
-              />
-              
-              {/* Accent Elements */}
-              <div className="absolute -top-8 -right-8 w-24 lg:w-32 h-24 lg:h-32 bg-[#C1272D]/10 rounded-full blur-3xl"></div>
-              <div className="absolute -bottom-8 -left-8 w-32 lg:w-40 h-32 lg:h-40 bg-[#D4AF37]/10 rounded-full blur-3xl"></div>
-              
-              {/* Corner Decorations */}
-              <div className="absolute top-0 left-0">
-                <EndlessKnot className="w-8 h-8 opacity-30" />
-              </div>
-              <div className="absolute bottom-0 right-0">
-                <LotusFlower className="w-8 h-8 opacity-30" />
-              </div>
-            </div>
-          </div>
+    <div className="min-h-screen bg-[#111] relative overflow-hidden">
+      {/* Hero/Main Section */}
+      <div className="min-h-screen relative flex items-center justify-center">
+        {/* Futuristic Background Elements */}
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_0%,transparent_70%)]"></div>
         </div>
-      </section>
 
-      {/* Featured Projects Preview */}
-      <section className="py-16 lg:py-24 px-4 sm:px-8 md:px-16 lg:px-24 bg-white/30 relative">
-        {/* Decorative Prayer Flag */}
-        <PrayerFlagBar className="absolute top-0 left-0 right-0" />
-        
+        <section className="relative z-10 max-w-4xl w-full px-6 py-20 flex flex-col items-center text-center">
+          {/* Main Logo */}
+          <div className="w-32 h-32 lg:w-48 lg:h-48 mb-8 shake">
+            <img src="/img/logo.png" alt="Kusang Lhamo" className="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" />
+          </div>
+
+          {/* Name and Title */}
+          <div className="space-y-2 mb-8">
+            <h1 className="text-5xl lg:text-8xl font-['Bebas_Neue',sans-serif] tracking-[0.2em] text-white">
+              KUSANG LHAMO
+            </h1>
+            <p className="text-xl lg:text-2xl font-light text-white/60 tracking-widest italic">
+              Game art student
+            </p>
+          </div>
+
+          {/* Intro Text */}
+          <div className="max-w-2xl mb-12">
+            <p className="text-lg lg:text-xl text-white/80 font-light leading-relaxed tracking-wide">
+              I enjoy creating immersive environments and game-ready assets, focusing on storytelling and clean 3D workflows.
+            </p>
+          </div>
+
+          {/* Centered Navigation Icons (from sketch) */}
+          <div className="flex flex-wrap justify-center gap-8 lg:gap-12 mb-12">
+            {[
+              { path: '/', icon: '/img/home.png', label: 'Home' },
+              { path: '/projects', icon: '/img/work.png', label: 'Work' },
+              { path: '/about', icon: '/img/about.png', label: 'About' },
+              { path: '/contact', icon: '/img/contact.png', label: 'Contact' }
+            ].map((item) => (
+              <Link 
+                key={item.path} 
+                to={item.path} 
+                className="group flex flex-col items-center gap-3 transition-transform hover:scale-110"
+              >
+                <div className="w-16 h-16 lg:w-20 lg:h-20 border border-white/10 p-4 group-hover:border-white/40 transition-all duration-500 bg-white/5 rounded-sm flicker">
+                  <img src={item.icon} alt={item.label} className="w-full h-full object-contain" />
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Footer line */}
+          <p className="text-[10px] text-white/30 tracking-[0.3em] uppercase">
+            Still learning and building my journey in game art.
+          </p>
+        </section>
+      </div>
+
+      {/* Featured Projects Preview - Updated to Dark Theme */}
+      <section className="py-24 px-4 sm:px-8 md:px-16 lg:px-24 bg-white/[0.02] border-t border-white/5 relative">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 lg:mb-12 gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-12 gap-4">
             <div>
-              <h2 className="text-4xl lg:text-5xl font-['Bebas_Neue',sans-serif] text-[#2B2B2B] tracking-wide">SELECTED WORK</h2>
-              <p className="text-[#2B2B2B]/60 mt-2 text-sm lg:text-base">Recent projects and explorations</p>
+              <h2 className="text-4xl lg:text-5xl font-['Bebas_Neue',sans-serif] text-white tracking-widest flicker">SELECTED WORK</h2>
+              <p className="text-white/40 mt-2 text-sm lg:text-base tracking-wider uppercase">Recent projects and explorations</p>
             </div>
             <Link to="/projects">
-              <Button variant="ghost" className="text-[#C1272D] hover:text-[#A01F25]">
-                View All
+              <Button variant="ghost" className="text-white/60 hover:text-white border border-white/10 hover:border-white/40 tracking-widest text-xs font-['Bebas_Neue',sans-serif]">
+                VIEW ALL
                 <ArrowRight size={16} className="ml-2" />
               </Button>
             </Link>
           </div>
 
           {loadingProjects && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {[0, 1, 2].map((item) => (
-                <div key={item} className="rounded-sm bg-white shadow-md overflow-hidden">
-                  <Skeleton className="aspect-[4/3] w-full rounded-none" />
-                  <div className="p-4 space-y-2">
-                    <Skeleton className="h-5 w-3/4" />
-                    <Skeleton className="h-4 w-1/2" />
-                  </div>
-                </div>
+                <div key={item} className="aspect-[4/3] bg-white/5 border border-white/10 animate-pulse"></div>
               ))}
             </div>
           )}
           {projectsError && (
-            <p className="text-sm text-red-600">{projectsError}</p>
+            <p className="text-sm text-red-500">{projectsError}</p>
           )}
           {!loadingProjects && !projectsError && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {projects.slice(0, 3).map((project, index) => (
-              <Link
-                key={project.id}
-                to={`/project/${project.id}`}
-                className="group relative overflow-hidden rounded-sm bg-white shadow-md hover:shadow-2xl transition-all duration-500"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img
-                    src={project.thumbnail}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end">
-                  <div className="p-4 lg:p-6 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    <h3 className="text-lg lg:text-xl font-semibold mb-1">{project.title}</h3>
-                    <p className="text-xs lg:text-sm text-white/80">{project.category} · {project.year}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+              {projects.slice(0, 3).map((project, index) => (
+                <Link
+                  key={project.id}
+                  to={`/project/${project.id}`}
+                  className="group relative overflow-hidden border border-white/5 hover:border-white/20 transition-all duration-500"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="aspect-[4/3] overflow-hidden">
+                    <img
+                      src={project.thumbnail}
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60 group-hover:opacity-100 grayscale group-hover:grayscale-0"
+                    />
                   </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end">
+                    <div className="p-6 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                      <h3 className="text-xl font-['Bebas_Neue',sans-serif] tracking-widest mb-1">{project.title.toUpperCase()}</h3>
+                      <p className="text-[10px] text-white/60 tracking-widest uppercase">{project.category} · {project.year}</p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
           )}
         </div>
       </section>

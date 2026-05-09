@@ -1,149 +1,76 @@
-# Kusang Lhamo - CMS Portfolio
+# Kusang Lhamo - Firebase CMS Portfolio
 
-This project now uses a real backend CMS flow:
+This project uses a Firebase-only CMS flow (no custom backend required):
 
-- Public projects come from MongoDB via FastAPI APIs.
-- Admin panel creates/updates/deletes projects through authenticated endpoints.
-- Contact form messages are stored in MongoDB and visible in admin.
-- Admin can store a per-project 3D object URL.
-- No `mockData.js` and no localStorage project storage.
+- Public projects come from Firestore.
+- Admin panel creates/updates/deletes projects in Firestore.
+- Contact form messages are stored in Firestore and visible in admin.
+- Portfolio views are tracked in Firestore analytics doc.
 
 ## Stack
 
 - Frontend: React (CRA + CRACO, Tailwind)
-- Backend: FastAPI
-- Database: MongoDB (Motor)
-- Free hosting path: Vercel + Render + MongoDB Atlas
+- Auth: Firebase Authentication (Email/Password)
+- Database: Firebase Firestore
+- Free hosting path: Firebase Spark plan + Vercel
 
-## CMS Data Storage
+## Firestore Collections
 
-- `projects` collection: all portfolio project content.
-- `contact_messages` collection: contact form submissions.
-- Admin JWT token is stored in browser localStorage key `adminToken`.
-- Admin username/password are read from backend environment variables.
+- `projects`: all portfolio project content.
+- `contact_messages`: contact form submissions.
+- `analytics/portfolio_views`: portfolio view counter.
 
-## Image Safety (to avoid layout conflicts)
+## Local setup
 
-- Thumbnail images are displayed at 4:3 ratio.
-- Hero images are displayed at 16:9 ratio.
-- Backend validates image URLs and 3D URL as valid `http/https`.
-- Recommended: upload/crop media near the display ratio to avoid aggressive cropping.
-
-## Backend Environment Variables
-
-Set these in `backend/.env` locally and Render in production:
-
-```env
-MONGO_URL=mongodb://localhost:27017
-DB_NAME=kusang_lhamo
-JWT_SECRET=change-me
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD=change-me
-CORS_ORIGINS=http://localhost:3000,https://your-frontend.vercel.app
-```
-
-## Run Locally
-
-### Backend
-
-```bash
-cd backend
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-```
-
-### Frontend
+### 1) Install dependencies
 
 ```bash
 cd frontend
 yarn install
+```
+
+### 2) Configure Firebase env
+
+Create `frontend/.env` from `frontend/.env.example`:
+
+```env
+REACT_APP_FIREBASE_API_KEY=
+REACT_APP_FIREBASE_AUTH_DOMAIN=
+REACT_APP_FIREBASE_PROJECT_ID=
+REACT_APP_FIREBASE_STORAGE_BUCKET=
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=
+REACT_APP_FIREBASE_APP_ID=
+REACT_APP_ADMIN_EMAIL=
+```
+
+### 3) Start frontend
+
+```bash
+cd frontend
 yarn start
 ```
 
-Optional frontend env (`frontend/.env`):
+## Firebase setup (free plan)
 
-```env
-REACT_APP_API_URL=http://localhost:8000
-```
+1. Create a Firebase project (Spark/free).
+2. Enable **Authentication** → Email/Password provider.
+3. Create your admin user in Firebase Auth.
+4. Create **Firestore Database** (Production or Test mode, then set rules).
+5. Add your local and deployed domains to Firebase Auth authorized domains.
+6. Apply Firestore rules from `frontend/firestore.rules` (replace admin email first).
 
-## Seed Initial Projects (Optional)
+## Deploy
 
-You can insert starter projects into MongoDB once:
-
-```bash
-cd backend
-python3 scripts/seed_projects.py
-```
-
-Seed source file:
-
-- `backend/seed/projects.seed.json`
-
-You can edit this file and run the seed script again. Existing entries are updated by `title + year`.
-
-## API Overview
-
-### Public
-
-- `GET /api/health`
-- `GET /api/projects` (published only)
-- `GET /api/projects/{id}`
-
-### Admin (JWT required)
-
-- `POST /api/admin/login`
-- `GET /api/admin/me`
-- `GET /api/admin/projects`
-- `POST /api/admin/projects`
-- `PUT /api/admin/projects/{id}`
-- `DELETE /api/admin/projects/{id}`
-
-## Deploy (Free Tier)
-
-### MongoDB Atlas
-
-- Create free cluster and user.
-- Add network access.
-- Copy connection string to `MONGO_URL`.
-
-### Render (Backend)
-
-- Root directory: `backend`
-- Build command:
-
-```bash
-pip install -r requirements.txt
-```
-
-- Start command:
-
-```bash
-uvicorn main:app --host 0.0.0.0 --port $PORT
-```
-
-- Set backend env vars listed above.
-- Render example backend URL:
-  - `https://your-backend.onrender.com`
-
- ### Vercel (Frontend)
+### Vercel (Frontend)
 
 - Root directory: `frontend`
 - Install: `yarn install`
 - Build: `yarn build`
 - Output: `build`
-- Set `REACT_APP_API_URL` to your Render backend URL.
+- Set all `REACT_APP_FIREBASE_*` variables in Vercel environment.
 
-## Vite Note
+## Image Safety (to avoid layout conflicts)
 
-- The current frontend is CRA + CRACO and is deployable now.
-- If you later migrate to Vite, keep the same backend/database; only frontend build tooling changes.
-- On Vite, frontend env variable becomes `VITE_API_URL` instead of `REACT_APP_API_URL`.
-
-## Security Notes
-
-- Admin JWT expires in 60 minutes.
-- Frontend clears expired/invalid token automatically.
-- Keep `JWT_SECRET` strong in production.
-- Restrict `CORS_ORIGINS` to your real frontend domain(s).
+- Thumbnail images are displayed at 4:3 ratio.
+- Hero images are displayed at 16:9 ratio.
+- Admin form uses URL inputs for image fields.

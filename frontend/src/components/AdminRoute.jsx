@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
-import { isAdminLoggedIn } from "@/api/auth";
+import { isAdminLoggedIn, subscribeAdminAuthState } from "@/api/auth";
 
 const AdminRoute = ({ children }) => {
-  if (!isAdminLoggedIn()) {
+  const [isReady, setIsReady] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(isAdminLoggedIn());
+
+  useEffect(() => {
+    const unsubscribe = subscribeAdminAuthState((user) => {
+      setIsLoggedIn(Boolean(user));
+      setIsReady(true);
+    });
+    return unsubscribe;
+  }, []);
+
+  if (!isReady) {
+    return null;
+  }
+
+  if (!isLoggedIn) {
     return <Navigate to="/admin/login" replace />;
   }
   return children;

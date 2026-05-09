@@ -1,13 +1,24 @@
-import { apiRequest } from "./client";
+import { doc, getDoc, runTransaction } from "firebase/firestore";
+
+import { db } from "@/lib/firebase";
+
+const viewsRef = doc(db, "analytics", "portfolio_views");
 
 export async function getPortfolioViews() {
-  const data = await apiRequest("/api/portfolio/views");
-  return Number(data?.count || 0);
+  const snapshot = await getDoc(viewsRef);
+  if (!snapshot.exists()) {
+    return 0;
+  }
+  return Number(snapshot.data()?.count || 0);
 }
 
 export async function incrementPortfolioViews() {
-  const data = await apiRequest("/api/portfolio/views/increment", {
-    method: "POST",
+  const count = await runTransaction(db, async (transaction) => {
+    const snapshot = await transaction.get(viewsRef);
+    const currentCount = Number(snapshot.data()?.count || 0);
+    const nextCount = currentCount + 1;
+    transaction.set(viewsRef, { count: nextCount }, { merge: true });
+    return nextCount;
   });
-  return Number(data?.count || 0);
+  return count;
 }

@@ -9,8 +9,8 @@
 /* Text Outline Effect for Name */
 .text-outline {
   color: transparent;
-  -webkit-text-stroke: 2px #2B2B2B;
-  text-stroke: 2px #2B2B2B;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
+  text-stroke: 1px rgba(255, 255, 255, 0.4);
 }
 
 /* Smooth Scrolling */
@@ -32,13 +32,14 @@ html {
     left: 0;
     width: 8px;
     height: 8px;
-    background: #C1272D;
+    background: #39FF14;
     border-radius: 50%;
     pointer-events: none;
     z-index: 10000;
     transform: translate(-50%, -50%);
     transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
-    mix-blend-mode: difference;
+    box-shadow: 0 0 12px rgba(57, 255, 20, 0.65), 0 0 28px rgba(57, 255, 20, 0.35);
+    mix-blend-mode: screen;
   }
   
   /* Cursor on interactive elements */
@@ -53,38 +54,39 @@ html {
     left: 0;
     width: 32px;
     height: 32px;
-    border: 2px solid #C1272D;
+    border: 2px solid #39FF14;
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
     transform: translate(-50%, -50%);
     transition: width 0.3s ease, height 0.3s ease;
     opacity: 0.5;
+    box-shadow: 0 0 18px rgba(57, 255, 20, 0.35);
   }
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #F5F1E8;
+  background: #111;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #C1272D;
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #A01F25;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* Selection Color */
 ::selection {
-  background: #C1272D;
-  color: white;
+  background: rgba(255, 255, 255, 0.99);
+  color: #111;
 }
 
 /* Transitions for interactive elements */

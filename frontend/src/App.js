@@ -16,9 +16,11 @@ import AdminMessages from "./pages/AdminMessages";
 import { Toaster } from "./components/ui/toaster";
 import AdminRoute from "./components/AdminRoute";
 
+import Games from "./pages/Games";
+
 function App() {
   return (
-    <div className="App">
+    <div className="App bg-[#111]">
       <BrowserRouter>
         <InteractiveCursor />
         
@@ -35,18 +37,20 @@ function App() {
             <>
               <Sidebar />
               <MobileNav />
-              <main className="lg:ml-40 pt-[57px] lg:pt-0 pb-[65px] lg:pb-0">
+              <main className="lg:ml-40 pt-[57px] lg:pt-0 pb-[65px] lg:pb-0 min-h-screen">
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/projects" element={<Projects />} />
                   <Route path="/project/:id" element={<ProjectDetail />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/contact" element={<Contact />} />
+                  <Route path="/games" element={<Games />} />
                 </Routes>
               </main>
             </>
           } />
         </Routes>
+
         
         <Toaster />
       </BrowserRouter>

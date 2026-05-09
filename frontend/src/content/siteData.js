@@ -29,8 +29,15 @@ export const skills = [
 
 export const categories = [
   { id: "all", label: "All" },
-  { id: "environment", label: "Environment" },
-  { id: "props", label: "Props" },
-  { id: "3d-art", label: "3D Art" },
-  { id: "cultural", label: "Cultural Study" },
+  { id: "3d", label: "3D" },
+  { id: "2d", label: "2D" },
+];
+
+
+export const navItems = [
+  { path: '/', label: 'HOME', icon: '/img/home.png' },
+  { path: '/projects', label: 'WORK', icon: '/img/work.png' },
+  { path: '/about', label: 'ABOUT', icon: '/img/about.png' },
+  { path: '/contact', label: 'CONTACT', icon: '/img/contact.png' },
+  { path: '/games', label: 'PLAY ME', icon: '/img/games.png' }
 ];

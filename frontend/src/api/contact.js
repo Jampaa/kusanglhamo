@@ -1,32 +1,46 @@
-import { apiRequest } from "./client";
+import { addDoc, collection, getDocs, serverTimestamp } from "firebase/firestore";
 
-function normalizeMessagesResponse(response) {
-  if (Array.isArray(response)) {
-    return response;
+import { db } from "@/lib/firebase";
+
+const CONTACT_COLLECTION = "contact_messages";
+
+function toIso(value) {
+  if (!value) {
+    return "";
   }
-
-  if (response && typeof response === "object") {
-    if (Array.isArray(response.messages)) {
-      return response.messages;
-    }
-    if (Array.isArray(response.data)) {
-      return response.data;
-    }
-    if (Array.isArray(response.items)) {
-      return response.items;
-    }
+  if (typeof value?.toDate === "function") {
+    return value.toDate().toISOString();
   }
-
-  return [];
+  if (value instanceof Date) {
+    return value.toISOString();
+  }
+  return String(value);
 }
 
-export function submitContactMessage(payload) {
-  return apiRequest("/api/contact/messages", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
+function mapMessageDoc(snapshot) {
+  const data = snapshot.data();
+  return {
+    id: snapshot.id,
+    name: data.name || "",
+    email: data.email || "",
+    message: data.message || "",
+    createdAt: toIso(data.createdAt),
+  };
 }
 
-export function getAdminMessages() {
-  return apiRequest("/api/admin/messages").then(normalizeMessagesResponse);
+export async function submitContactMessage(payload) {
+  const normalized = {
+    name: (payload.name || "").trim(),
+    email: (payload.email || "").trim().toLowerCase(),
+    message: (payload.message || "").trim(),
+    createdAt: serverTimestamp(),
+  };
+  await addDoc(collection(db, CONTACT_COLLECTION), normalized);
+}
+
+export async function getAdminMessages() {
+  const snapshots = await getDocs(collection(db, CONTACT_COLLECTION));
+  return snapshots.docs
+    .map(mapMessageDoc)
+    .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
 }

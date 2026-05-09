@@ -23,14 +23,8 @@ const InteractiveCursor = () => {
     };
     setCanvasSize();
 
-    // Vibrant Tibetan Prayer Flag colors - more visible on light background
-    const colors = [
-      { r: 0, g: 128, b: 192 },    // Blue (Sky) #0080C0
-      { r: 0, g: 166, b: 81 },     // Green (Earth) #00A651
-      { r: 193, g: 39, b: 45 },    // Red (Fire) #C1272D
-      { r: 255, g: 213, b: 0 },    // Yellow (Air) #FFD500
-      { r: 120, g: 81, b: 169 },   // Purple/Violet (additional vibrance) #7851A9
-    ];
+    // Single neon cursor color (consistent glow)
+    const neon = { r: 57, g: 255, b: 20 }; //rgb(41, 251, 4)
 
     // Particle class
     class Particle {
@@ -60,7 +54,7 @@ const InteractiveCursor = () => {
         if (this.life <= 0) return;
 
         ctx.save();
-        ctx.globalAlpha = this.life * 0.3; // More visible opacity
+        ctx.globalAlpha = this.life * 0.35; // Slightly stronger neon glow
         
         // Create radial gradient for soft glow
         const gradient = ctx.createRadialGradient(
@@ -68,8 +62,8 @@ const InteractiveCursor = () => {
           this.x, this.y, this.size
         );
         
-        gradient.addColorStop(0, `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, 0.6)`);
-        gradient.addColorStop(0.4, `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, 0.3)`);
+        gradient.addColorStop(0, `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, 0.75)`);
+        gradient.addColorStop(0.35, `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, 0.35)`);
         gradient.addColorStop(1, `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, 0)`);
         
         ctx.fillStyle = gradient;
@@ -84,8 +78,7 @@ const InteractiveCursor = () => {
     // Create particles at cursor position
     const createParticles = (x, y, count = 1) => {
       for (let i = 0; i < count; i++) {
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        particles.current.push(new Particle(x, y, color));
+        particles.current.push(new Particle(x, y, neon));
       }
     };
 
@@ -172,8 +165,8 @@ const InteractiveCursor = () => {
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-[100]"
       style={{
-        mixBlendMode: 'multiply',
-        opacity: 0.7,
+        mixBlendMode: 'screen',
+        opacity: 0.75,
       }}
     />
   );

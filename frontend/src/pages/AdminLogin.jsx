@@ -61,7 +61,7 @@ const AdminLogin = () => {
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-[#2B2B2B] mb-2">
-                Username
+                Admin Email
               </label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#2B2B2B]/40" size={20} />
@@ -70,7 +70,7 @@ const AdminLogin = () => {
                   value={credentials.username}
                   onChange={(e) => setCredentials({...credentials, username: e.target.value})}
                   className="pl-10 border-[#2B2B2B]/20 focus:border-[#C1272D]"
-                  placeholder="Enter your username"
+                  placeholder="Enter your admin email"
                   required
                 />
               </div>

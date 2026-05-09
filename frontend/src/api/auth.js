@@ -1,49 +1,52 @@
-import { apiRequest, clearAdminToken, getAdminToken, setAdminToken } from "./client";
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
-function decodeJwtPayload(token) {
-  try {
-    const base64Payload = token.split(".")[1];
-    const payload = JSON.parse(atob(base64Payload));
-    return payload;
-  } catch (_error) {
-    return null;
-  }
-}
+import { auth } from "@/lib/firebase";
 
-function isTokenExpired(token) {
-  const payload = decodeJwtPayload(token);
-  if (!payload?.exp) {
-    return true;
+function resolveLoginEmail(rawUsername) {
+  const value = (rawUsername || "").trim();
+  if (!value) {
+    return "";
   }
-  const nowInSeconds = Math.floor(Date.now() / 1000);
-  return payload.exp <= nowInSeconds;
+  if (value.includes("@")) {
+    return value;
+  }
+  const configuredAdminEmail = process.env.REACT_APP_ADMIN_EMAIL || "";
+  if (configuredAdminEmail && value.toLowerCase() === configuredAdminEmail.split("@")[0].toLowerCase()) {
+    return configuredAdminEmail;
+  }
+  return value;
 }
 
 export async function loginAdmin(credentials) {
-  const data = await apiRequest("/api/admin/login", {
-    method: "POST",
-    body: JSON.stringify(credentials),
-  });
-  setAdminToken(data.token);
-  return data;
+  const email = resolveLoginEmail(credentials.username);
+  const password = credentials.password;
+  if (!email || !password) {
+    throw new Error("Email and password are required");
+  }
+  const result = await signInWithEmailAndPassword(auth, email, password);
+  const configuredAdminEmail = (process.env.REACT_APP_ADMIN_EMAIL || "").toLowerCase();
+  if (configuredAdminEmail && result.user.email?.toLowerCase() !== configuredAdminEmail) {
+    await signOut(auth);
+    throw new Error("This account is not authorized for admin access.");
+  }
+  return { username: result.user.email };
 }
 
 export async function getAdminMe() {
-  return apiRequest("/api/admin/me");
+  if (!auth.currentUser) {
+    throw new Error("Please login again.");
+  }
+  return { username: auth.currentUser.email };
 }
 
-export function logoutAdmin() {
-  clearAdminToken();
+export async function logoutAdmin() {
+  await signOut(auth);
 }
 
 export function isAdminLoggedIn() {
-  const token = getAdminToken();
-  if (!token) {
-    return false;
-  }
-  if (isTokenExpired(token)) {
-    clearAdminToken();
-    return false;
-  }
-  return true;
+  return Boolean(auth.currentUser);
+}
+
+export function subscribeAdminAuthState(callback) {
+  return onAuthStateChanged(auth, callback);
 }
